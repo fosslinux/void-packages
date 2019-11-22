@@ -1,0 +1,16 @@
+--- mrustc-0.9.orig/Makefile	2019-11-02 20:39:15.000000000 +1100
++++ mrustc-0.9.patch/Makefile	2019-11-22 16:24:21.661455089 +1100
+@@ -280,13 +280,6 @@
+ 	@mkdir -p $(dir $@)
+ 	@echo [CXX] -o $@
+ 	$V$(CXX) -o $@ $(LINKFLAGS) $(OBJ) tools/bin/common_lib.a $(LIBS)
+-ifeq ($(OS),Windows_NT)
+-else ifeq ($(shell uname -s || echo not),Darwin)
+-else
+-	objcopy --only-keep-debug $(BIN) $(BIN).debug
+-	objcopy --add-gnu-debuglink=$(BIN).debug $(BIN)
+-	strip $(BIN)
+-endif
+
+ $(OBJDIR)%.o: src/%.cpp
+ 	@mkdir -p $(dir $@)

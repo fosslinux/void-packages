@@ -1,0 +1,12 @@
+diff -u mrustc-0.9.orig/tools/minicargo/build.cpp mrustc-0.9.patch/tools/minicargo/build.cpp
+--- mrustc-0.9.orig/tools/minicargo/build.cpp	2019-11-02 20:39:15.000000000 +1100
++++ mrustc-0.9.patch/tools/minicargo/build.cpp	2019-11-23 19:56:28.696733088 +1100
+@@ -622,7 +622,7 @@
+ 
+     ::helpers::path minicargo_path { buf };
+     minicargo_path.pop_component();
+-    m_compiler_path = (minicargo_path / "../../bin/mrustc").normalise();
++    m_compiler_path = (minicargo_path / "mrustc").normalise();
+ #endif
+ }
+ 

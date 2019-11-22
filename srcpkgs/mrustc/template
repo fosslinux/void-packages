@@ -1,0 +1,31 @@
+# Template file for 'mrustc'
+pkgname=mrustc
+# update rust1.29-bootstrap when verbump
+version=0.9
+revision=1
+build_style=gnu-makefile
+# build fails with gcc9
+hostmakedepends="clang"
+makedepends="libpcre2 zlib-devel"
+short_desc="Alternative rust compiler (re-implementation)"
+maintainer="fosslinux <fosslinux@aussies.space>"
+license="MIT"
+homepage="https://github.com/thepowersgang/mrustc"
+distfiles="https://github.com/thepowersgang/mrustc/archive/v${version}.tar.gz"
+patch_args="-Np1"
+checksum=381ded90498a04a667ab67a33c1bf7ff1269026bd45a6bde9bac8bf694929de6
+
+# TODO: fix PIE with clang
+nopie=yes
+
+do_build() {
+	CC=clang CXX=clang++ make ${makejobs}
+	CC=clang CXX=clang++ make -C tools/minicargo ${makejobs}
+}
+
+do_install() {
+	mkdir -p ${DESTDIR}/usr/bin/
+	cp bin/mrustc ${DESTDIR}/usr/bin/
+	cp tools/bin/minicargo ${DESTDIR}/usr/bin/
+    vlicense LICENCE-MIT
+}
