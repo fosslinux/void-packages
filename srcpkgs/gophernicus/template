@@ -1,0 +1,15 @@
+# Template file for 'gophernicus'
+pkgname=gophernicus
+version=3.0.1
+revision=1
+build_style=gnu-makefile
+short_desc="Modern, full-featured, secure gopher daemon"
+maintainer="fosslinux <fosslinux@aussies.space>"
+license="BSD-2-Clause"
+homepage="http://github.com/gophernicus/gophernicus"
+distfiles="https://github.com/gophernicus/gophernicus/archive/v${version}.tar.gz"
+checksum=165fd2ad4fb0638df41471496bbac682203a15d05d5f7461885858172138bc96
+
+post_install() {
+	vlicense LICENSE
+}

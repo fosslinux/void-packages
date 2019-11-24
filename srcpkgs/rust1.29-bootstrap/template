@@ -1,0 +1,39 @@
+# Template file for 'rust1.29-bootstrap'
+pkgname=rust1.29-bootstrap
+version=1.29.0
+_mrustc_version=0.9
+revision=1
+wrksrc="rustc-${version}-src"
+short_desc="Safe, concurrent, practical systems language version 1.29"
+maintainer="fosslinux <fosslinux@aussies.space>"
+hostmakedepends="mrustc ruby pkg-config cmake"
+makedepends="libcurl-devel libssh2-devel libffi-devel ncurses-devel libxml2-devel zlib-devel libressl2.7 llvm"
+license="MIT, Apache-2.0"
+homepage="https://www.rust-lang.org/"
+distfiles="
+ https://static.rust-lang.org/dist/rustc-${version}-src.tar.xz
+ https://github.com/thepowersgang/mrustc/archive/v${_mrustc_version}.tar.gz"
+checksum="
+ 3943da98fb478a336ede7404e42ff76ef6ba4fc2b82012cfccd6b9fc4bd2c191
+ 381ded90498a04a667ab67a33c1bf7ff1269026bd45a6bde9bac8bf694929de6"
+
+post_extract() {
+    cp -r "../mrustc-${_mrustc_version}/script-overrides" "${wrksrc}/"
+    cp -r "../mrustc-${_mrustc_version}/lib/libproc_macro" "${wrksrc}/"
+}
+
+do_build() {
+    minicargo src/libstd --script-overrides script-overrides/stable-1.29.0-linux/ --output-dir output/ ${makejobs}
+    minicargo src/libpanic_unwind --script-overrides script-overrides/stable-1.29.0-linux/ --output-dir output/ ${makejobs}
+    minicargo src/libtest --vendor-dir src/vendor --output-dir output/ ${makejobs}
+    minicargo libproc_macro --output-dir output/ ${makejobs}
+    CFG_COMPILER_HOST_TRIPLE=${XBPS_CROSS_TRIPLET} LLVM_CONFIG=${wrksrc}/build/bin/llvm-config CFG_RELEASE= CFG_RELEASE_CHANNEL=stable CFG_VERSION=1.29.0-stable-mrustc CFG_PREFIX=mrustc CFG_LIBDIR_RELATIVE=lib LD_LIBRARY_PATH=${wrksrc}/output minicargo src/rustc --vendor-dir src/vendor --output-dir output/rustc-build -L output/ ${makejobs} # TODO: fix cross
+    minicargo src/librustc_codegen_llvm --vendor-dir src/vendor --output-dir output/rustc-build -L output/ ${makejobs}
+    minicargo src/tools/cargo --vendor-dir src/vendor --output-dir output/cargo-build -L output/ ${makejobs}
+}
+
+do_install() {
+    mkdir -p "${DESTDIR}/usr/bin"
+    cp output/rustc-build/rustc_binary "${DESTDIR}/usr/bin/rustc"
+    cp output/cargo-build/cargo "${DESTDIR}/usr/bin/cargo"
+}
