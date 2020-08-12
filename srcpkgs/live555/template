@@ -9,7 +9,7 @@ short_desc="Set of C++ libraries for multimedia streaming"
 maintainer="Denis Revin <denis.revin@gmail.com>"
 license="LGPL-3.0-or-later"
 homepage="http://www.live555.com/liveMedia/"
-distfiles="http://www.live555.com/liveMedia/public/live.$version.tar.gz"
+distfiles="https://download.videolan.org/contrib/live555/live.${version}.tar.gz"
 checksum=3242622f606eb821435983a5e5065b0746d8d8c41f34bbf3552031858de0789a
 
 if [ "$CROSS_BUILD" ]; then
