@@ -1,0 +1,19 @@
+# Template file for 'pash'
+pkgname=pash
+version=20200830
+_commit=45bab4dd8b2729d33beb08bb4973d4e86066e354
+wrksrc="${pkgname}-${_commit}"
+revision=1
+depends="pass perl expect openssh"
+short_desc="ssh crossed with pass to make a ssh key system"
+maintainer="fosslinux <fosslinux@aussies.space>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/fosslinux/pash"
+distfiles="https://github.com/fosslinux/pash/archive/${_commit}.zip"
+checksum=5fa72866381083ee464f34fb24b5e480c92f1240bd61192c67dbdb2a19e0756f
+
+do_install() {
+	vbin pash
+	vbin generate pash-generate
+	vlicense LICENSE
+}
