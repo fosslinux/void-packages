@@ -1,0 +1,24 @@
+# Template file for 'mergerfs-tools'
+pkgname=mergerfs-tools
+version=0.0.0+git20200718
+revision=1
+_hash=480296ed03d1c3c7909697d7ef96d35840ee26b8
+wrksrc="${pkgname}-${_hash}"
+build_style=gnu-makefile
+make_install_args="PREFIX=/usr"
+hostmakedepends="which"
+depends="python3"
+short_desc="Optional tools to help manage data in a mergerfs pool"
+maintainer="fosslinux <fosslinux@aussies.space>"
+license="ISC"
+homepage="https://github.com/trapexit/mergerfs-tools"
+distfiles="${homepage}/archive/480296ed03d1c3c7909697d7ef96d35840ee26b8.zip"
+checksum=2a84f6af034267c1947d30b510a5cda53a630f3c027d918917f5ccc7f9accdd7
+
+do_build() {
+	:
+}
+
+post_install() {
+	vlicense LICENSE
+}
