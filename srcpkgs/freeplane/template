@@ -1,9 +1,9 @@
 # Template file for 'freeplane'
 pkgname=freeplane
 version=1.8.11
-revision=1
-hostmakedepends="apache-ant openjdk8 unzip gradle"
-depends="virtual?java-runtime"
+revision=2
+hostmakedepends="apache-ant openjdk11 unzip gradle"
+depends="java-runtime>=11"
 short_desc="Application for Mind Mapping, Knowledge Management, Project Management"
 maintainer="Andrea Brancaleoni <abc@pompel.me>"
 license="GPL-2.0-or-later"
@@ -22,7 +22,7 @@ esac
 
 do_build() {
 	. /etc/profile.d/apache-ant.sh
-	. /etc/profile.d/10_openjdk8.sh
+	. /etc/profile.d/10_openjdk11.sh
 
 	gradle format_translation binZip -x test
 }
