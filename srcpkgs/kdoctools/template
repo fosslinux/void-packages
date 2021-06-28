@@ -7,7 +7,7 @@ configure_args="-DMEINPROC5_EXECUTABLE=/usr/bin/meinproc5
  -DCHECKXML5_EXECUTABLE=/usr/bin/checkXML5
  -DDOCBOOKL10NHELPER_EXECUTABLE=/usr/bin/docbookl10nhelper"
 hostmakedepends="gettext kcoreaddons extra-cmake-modules perl perl-URI
- qt5-host-tools qt5-qmake python kdoctools-devel"
+ qt5-host-tools qt5-qmake python"
 makedepends="ki18n-devel karchive-devel libxml2-devel libxslt-devel
  docbook-xml docbook-xsl"
 depends="docbook-xml docbook-xsl"
@@ -17,6 +17,10 @@ license="LGPL-2.1-or-later"
 homepage="https://invent.kde.org/frameworks/kdoctools"
 distfiles="${KDE_SITE}/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
 checksum=d3a4ea0d5c0348fff228aa5ba14a7d3eb00296c0f00b9ac9d4b74e56a89e395b
+
+if [ "$CROSS_BUILD" ]; then
+	hostmakedepends+=" kdoctools-devel"
+fi
 
 pre_check() {
 	export PATH="$PATH:${wrksrc}/build/bin"
