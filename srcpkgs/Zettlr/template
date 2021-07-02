@@ -1,0 +1,40 @@
+# Template file for 'Zettlr'
+pkgname=Zettlr
+version=1.8.9
+revision=1
+# tar is stupidly hardcoded
+hostmakedepends="yarn nodejs python3 tar git pandoc"
+makedepends="electron12"
+depends="electron12"
+short_desc="Markdown Editor for the 21st century"
+maintainer="fosslinux <fosslinux@aussies.space>"
+license="GPL-3.0-or-later"
+homepage="https://www.zettlr.com/"
+distfiles="https://github.com/Zettlr/Zettlr/archive/refs/tags/v${version}.tar.gz"
+checksum=351b579c2c42f2f1836e9882a27e0497c862857a826231b5067c1204d9b846b4
+
+post_extract() {
+	# Remove irrelevant files
+	rm -r resources/NSIS resources/icons/{*.icns,*.ico,dmg}
+	# Fix the location of a file
+	mv resources/icons/1024x1024.png resources/icons/png/
+}
+
+do_build() {
+	yarn install --build-from-source
+	yarn reveal:build
+	# Add in system pandoc for the build system
+	ln -sf /usr/bin/pandoc resources/pandoc
+	node node_modules/.bin/electron-forge package
+}
+
+do_install() {
+	vcopy .webpack usr/lib/zettlr
+	vcopy resources usr/lib/zettlr
+
+	vbin "${FILESDIR}/zettlr"
+	vinstall "${FILESDIR}/zettlr.desktop" 0644 usr/share/applications
+	for px in 16 24 32 48 64 96 128 256 512 1024; do
+		vinstall "resources/icons/png/${px}x${px}.png" 0644 "usr/share/icons/hicolor/${px}x${px}/apps"
+	done
+}
